@@ -17,7 +17,8 @@ def update_currency_rates
     data = JSON.parse(response)
 
     # Format time_last_updated to MM/DD/YYYY HH:MM:SS UTC
-    formatted_time = Time.at(data['timestamp']).utc.strftime('%m/%d/%Y %H:%M:%S UTC')
+    timestamp = data['timestamp']
+    formatted_time = Time.at(timestamp).utc.strftime('%m/%d/%Y %H:%M:%S UTC')
 
     # Clean the JSON by removing unnecessary fields and formatting time
     cleaned_data = {
@@ -27,11 +28,14 @@ def update_currency_rates
     }
 
     # Save the cleaned JSON to a file
-    File.open('currencyRates.json', 'w') do |file|
+    filename = "#{timestamp}currencyRates.json"
+    File.open("./data/#{filename}", 'w') do |file|
       file.write(JSON.pretty_generate(cleaned_data))
     end
 
-    puts 'currencyRates.json has been successfully updated!'
+    puts "#{filename} has been successfully updated!"
+
+    return filename
 
   rescue JSON::ParserError => e
     puts "Error: Failed to parse JSON response. Details: #{e.message}"
@@ -41,6 +45,3 @@ def update_currency_rates
     puts "An unexpected error occurred: #{e.message}"
   end
 end
-
-# Call the function
-update_currency_rates
