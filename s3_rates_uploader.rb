@@ -1,5 +1,4 @@
 require 'aws-sdk-s3'
-require_relative 'json_fetcher'
 
 def upload_file(filename)
   source_file = filename
@@ -18,5 +17,3 @@ def upload_file(filename)
     puts "Couldn't put your content to #{target_bucket}. Here's why: #{e.message}"
   end
 end
-
-upload_file(update_currency_rates)
