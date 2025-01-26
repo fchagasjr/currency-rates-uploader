@@ -5,7 +5,9 @@ require 'time'
 def update_currency_rates
   begin
     # API URL
-    url = 'https://api.exchangerate-api.com/v4/latest/USD'
+    api_id = ENV["OPENEXCHANGE_API"]
+
+    url = "https://openexchangerates.org/api/latest.json?app_id=#{api_id}"
 
     # Fetch data from the API
     uri = URI(url)
@@ -15,7 +17,7 @@ def update_currency_rates
     data = JSON.parse(response)
 
     # Format time_last_updated to MM/DD/YYYY HH:MM:SS UTC
-    formatted_time = Time.at(data['time_last_updated']).utc.strftime('%m/%d/%Y %H:%M:%S UTC')
+    formatted_time = Time.at(data['timestamp']).utc.strftime('%m/%d/%Y %H:%M:%S UTC')
 
     # Clean the JSON by removing unnecessary fields and formatting time
     cleaned_data = {
