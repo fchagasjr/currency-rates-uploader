@@ -150,12 +150,17 @@ class ChronoTrigger
   attr_reader :trigger_frequency, :sleep_time
 
   def initialize(trigger_frequency: 1.hour, sleep_time: 15.minutes)
+    raise ArgumentError "trigger_frequency can't be less than sleep_time" if trigger_frequency < sleep_time
+
+    raise ArgumentError "minimum sleep_time is 1 second" if sleep_time < 1
+
     @trigger_frequency = trigger_frequency
     @sleep_time = sleep_time
   end
 
   def start(&block)
     trigger_time = Time.now
+    next_trigger_check = Time.now
 
     while true
       if Time.now >= trigger_time
@@ -167,13 +172,14 @@ class ChronoTrigger
           puts "#{e.message}"
         ensure
           trigger_time = Time.now + trigger_frequency
+          next_trigger_check = Time.now + sleep_time
           puts "#{Quotes.next_trigger_quote(trigger_time)}}"
         end
-      else
+      elsif Time.now >= next_trigger_check
         puts "#{Quotes.sleep_quote}"
+        next_trigger_check = Time.now + sleep_time
       end
-      puts
-      sleep(sleep_time)
+      sleep(1)
     end
   end
 end
