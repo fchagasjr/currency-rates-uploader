@@ -4,4 +4,5 @@ source "https://rubygems.org"
 
 gem 'aws-sdk-s3',  '~> 1'
 gem 'nokogiri'
+gem 'time_egg'
 

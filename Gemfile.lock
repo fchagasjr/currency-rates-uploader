@@ -25,6 +25,7 @@ GEM
     nokogiri (1.18.2-x86_64-darwin)
       racc (~> 1.4)
     racc (1.8.1)
+    time_egg (0.0.0)
 
 PLATFORMS
   ruby
@@ -33,6 +34,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-s3 (~> 1)
   nokogiri
+  time_egg
 
 BUNDLED WITH
    2.5.6
